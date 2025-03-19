@@ -8,7 +8,7 @@ import ShareModal from "@/app/components/quiz/code/quiz_share"
 import Navbar from "@/app/components/navbar"
 import FinishScreen from "@/app/components/quiz/code/quiz_finished"
 
-export default function Quiz({ params }: { params: { code: string } }) {
+export default function Quiz({ params } : any) {
   const { data: session } = useSession()
   const router = useRouter()
   const quiz_code = params.code

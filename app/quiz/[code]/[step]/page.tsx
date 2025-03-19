@@ -3,7 +3,7 @@ import QuestionInterface from "@/app/components/quiz/code/step/quiz_questions"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export default function Step({ params }: { params: { code: string, step: number } }) {
+export default function Step({ params } : any) {
   const router = useRouter()
   const quiz_code = params.code
   const quiz_step = params.step
