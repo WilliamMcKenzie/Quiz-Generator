@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^1.1.15",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@prisma/client": "^6.5.0",
+    "ai": "^4.1.63",
     "daisyui": "^5.0.6",
     "framer-motion": "^12.5.0",
     "kute.js": "^2.2.4",

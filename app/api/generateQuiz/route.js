@@ -1,5 +1,3 @@
-import { deepseek } from '@ai-sdk/deepseek'
-import { openai } from '@ai-sdk/openai'
 import { groq } from '@ai-sdk/groq';
 import { streamText } from 'ai'
 import { NextRequest } from 'next/server'
