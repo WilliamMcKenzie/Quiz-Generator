@@ -11,7 +11,7 @@ export async function POST(request : NextRequest) {
   const signature : string = headers_list.get('stripe-signature')!
 
   const event = stripe.webhooks.constructEvent(await request.text(), signature, process.env.STRIPE_WEBHOOK_SECRET!)
-  if (event.type == "payment_intent.succeeded")
+  if (event.type == "checkout.session.completed")
   {
     const customer_id : any = event.data.object.customer
     const customer : any = await stripe.customers.retrieve(customer_id)
