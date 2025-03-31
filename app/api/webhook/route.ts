@@ -19,9 +19,9 @@ export async function POST(request : NextRequest) {
 
     resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'williamqmckenzie@gmail.com',
+      to: email,
       subject: 'Quizgen Pro Confirmation',
-      html: '<p>This email confirms that you have purchased Quizgen Pro. For any support contact williamqmckenzie@gmail.com, and I will get back to you within 24h.</p>'
+      html: '<p>This email confirms that you have purchased Quizgen Pro. For any support contact williamqmkz@gmail.com, and I will try to get back to you within 24h! Thanks for supporting my humble endeavour.</p>'
     })
 
     await prisma.user.updateMany({

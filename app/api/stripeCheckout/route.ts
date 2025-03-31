@@ -1,3 +1,4 @@
+import resend from '@/app/components/singletons/resend'
 import stripe from '@/app/components/singletons/stripe'
 import { headers } from 'next/headers'
 
