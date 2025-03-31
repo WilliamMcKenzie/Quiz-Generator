@@ -1,7 +1,6 @@
 "use client"
 
 import { useRouter } from 'next/navigation'
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from 'react'
 import isMobile from '../components/singletons/is_mobile'
 
@@ -90,7 +89,7 @@ export default function Pro() {
             </div>
           </div>
 
-          <div className={`border-t-5 border-b-5 border-0 border border-dashed border-[var(--background)] mt-[8rem] bg-slate-200 w-screen flex flex-col items-center align-center p-[4rem]`}>
+          <div className={`border-t-5 border-b-5 border-0 border border-dashed border-[var(--color-base-100)] mt-[8rem] bg-slate-200 w-screen flex flex-col items-center align-center p-[4rem]`}>
 
             <div id="pricing" className='bg-[var(--background)] flex items-center justify-center rounded-lg overflow-hidden w-96 shadow-sm'>
               <video className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2" autoPlay={true} muted={true} loop={true} playsInline={true} controls={true} width="500" height="500"><source src="/quizgen_pro.mp4" type="video/mp4"/></video>

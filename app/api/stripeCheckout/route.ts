@@ -14,7 +14,7 @@ export async function POST() {
     ],
     mode: 'payment',
     customer_creation: "always",
-    success_url: `${origin}/success`,
+    success_url: `${origin}/pro/success`,
     cancel_url: `${origin}/pro`,
   })
   return new Response(session.url)

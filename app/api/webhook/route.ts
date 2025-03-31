@@ -1,4 +1,5 @@
 import prisma from '@/app/components/singletons/client'
+import resend from '@/app/components/singletons/resend'
 import stripe from '@/app/components/singletons/stripe'
 import { getServerSession } from 'next-auth'
 import { headers } from 'next/headers'
@@ -15,6 +16,13 @@ export async function POST(request : NextRequest) {
     const customer_id : any = event.data.object.customer
     const customer : any = await stripe.customers.retrieve(customer_id)
     const email = customer.email
+
+    resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'williamqmckenzie@gmail.com',
+      subject: 'Quizgen Pro Confirmation',
+      html: '<p>This email confirms that you have purchased Quizgen Pro. For any support contact williamqmckenzie@gmail.com, and I will get back to you within 24h.</p>'
+    })
 
     await prisma.user.updateMany({
         where: {
