@@ -38,7 +38,7 @@ export default function Quiz({ params } : any) {
     <main className="flex justify-center items-center flex-col" style={{ width: "100vw", height: "100vh" }}>
       <Navbar title={quiz_name.toUpperCase()} quiz_code={quiz_code} options={{ "share_ref": share_ref }}/>
       <ShareModal ref={share_ref} quiz_code={quiz_code}/>
-      <FinishScreen user_email={session?.user?.email!} quiz_length={content.length} quiz_ranking={quiz_ranking} quiz_code={quiz_code} is_leaderboard={true}/>
+      <FinishScreen user_email={session?.user?.email!} quiz_content={content} quiz_ranking={quiz_ranking} quiz_code={quiz_code} is_leaderboard={true}/>
     </main>
   )
 }

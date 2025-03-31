@@ -1,4 +1,5 @@
-import { forwardRef, LegacyRef } from "react"
+import { forwardRef, LegacyRef, useEffect, useState } from "react"
+import isMobile from "../../singletons/is_mobile"
 
 interface prop_typing {
     quiz_code : string
@@ -6,12 +7,19 @@ interface prop_typing {
 
 export default forwardRef(function ShareModal({ quiz_code } : prop_typing, ref : LegacyRef<HTMLDialogElement>)
 {
+    const [is_mobile, setMobile] = useState<boolean>(false)
+    useEffect(() => {
+        setMobile(isMobile())
+        window.addEventListener('resize', () => {
+            setMobile(isMobile())
+        })
+    }, [])
     const path = typeof window != undefined ? window.location.hostname + "/quiz/" + quiz_code : ""
 
     return (
         <dialog ref={ref} id="share_modal" className="modal">
-            <div className="modal-box" style={{maxWidth: "fit-content"}}>
-                <div className="stats">
+            <div className="modal-box" style={{ maxWidth: "fit-content", width: "80vw"}}>
+                <div className="stats" style={is_mobile ? { display: "flex", flexDirection: "column" } : {}}>
                     <div className="stat">
                         <div className="stat-figure">
                             <button className="btn btn-circle btn-ghost text-secondary" onClick={() => { navigator.clipboard.writeText(quiz_code)} }>

@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div style={{ overflow: "hidden", maxWidth: "100vw", maxHeight: "100vh" }} className={`min-h-screen mx-auto items-center justify-center flex flex-col main_font`}>
-        <h1 className="text-center mb-4 text-4xl font-bold" >QUIZ GEN</h1> 
+        <h1 className="text-center mb-4 text-4xl font-bold" >QUIZ GEN</h1>
         <h3 className="text-center mb-4 text-xl">Test your knowledge on anything.</h3>
         <Background/>
         <EnterCode ref={code_ref}/>

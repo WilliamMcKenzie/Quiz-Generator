@@ -19,7 +19,7 @@ export default function Quiz() {
   async function init()
   {
     const user_data = await (await fetch(`/api/fetchUser?email=${session.user.email}`)).json()
-    setQuizzes(user_data.quizzes)
+    setQuizzes(user_data.quizzes.reverse())
     setUserData(user_data)
   }
 

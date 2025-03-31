@@ -1,9 +1,11 @@
 "use client"
 import QuestionInterface from "@/app/components/quiz/code/step/quiz_questions"
 import { useRouter } from "next/navigation"
+import React from "react"
 import { useEffect, useState } from "react"
 
 export default function Step({ params } : any) {
+  params = React.use(params)
   const router = useRouter()
   const quiz_code = params.code
   const quiz_step = params.step

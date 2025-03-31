@@ -19,10 +19,10 @@ export default function QuestionInterface({ quiz_step_data, step_score, question
     const current_question: any = quiz_step_data.questions[question_index]
 
     return (
-        <div className="flex flex-col items-center justify-center" style={{ width: "100vw", height: "100vh" }}>
-            <h1 style={{fontSize:'2rem'}} className="main_font font-bold"> {step_title.toUpperCase()} </h1>
-            <p style={{marginBottom:'100px', marginTop:'10px'}} className="main_font"> {current_question.question} </p>
-            <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center w-screen h-screen">
+            <h1 style={{fontSize:'2rem'}} className="main_font font-bold text-center"> {step_title.toUpperCase()} </h1>
+            <p style={{ maxWidth: "80vw" }} className="main_font mb-20 mt-4 text-center"> {current_question.question} </p>
+            <div style={{ width: "80vw" }} className="flex flex-col items-center justify-center max-w-80">
                 {current_question.responses.map((response : string, index : number) => {
                     var button_class = ""
                     const guessed_index = index == guess_index
@@ -42,9 +42,9 @@ export default function QuestionInterface({ quiz_step_data, step_score, question
                     }
 
                     return (
-                        <button disabled={quiz_finished || (answer_locked_in && (!guessed_index && !correct_index))} className={ "btn relative h-12 w-full mt-2 " + button_class } style={{ width: "50vw", maxWidth: "40rem" }} key={index} onClick={() => { setGuess(index) }}>
+                        <button disabled={quiz_finished || (answer_locked_in && (!guessed_index && !correct_index))} className={ "btn relative h-12 mt-2 w-full " + button_class } key={index} onClick={() => { setGuess(index) }}>
                             <a className="absolute left-4">{index + 1}</a>
-                            {response}
+                            <p className="w-[80%]"> {response} </p>
                         </button>
                     )
                 })}
@@ -52,8 +52,7 @@ export default function QuestionInterface({ quiz_step_data, step_score, question
                 {
                     answer_locked_in ? 
                     <button 
-                        className="btn btn-secondary w-full mt-6" 
-                        style={{ maxWidth: "30rem" }}
+                        className="btn btn-secondary w-full mt-6"
                         disabled={quiz_finished}
                         onClick={() => {
                             setGuess(null)

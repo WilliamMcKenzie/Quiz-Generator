@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 interface prop_typing {
     quizzes : any,
@@ -9,13 +10,11 @@ export default function QuizzesDisplay({ quizzes, user_data } : prop_typing)
 {
     const router = useRouter()
 
-    var placeholders = []
-    for (var i = 0; i < Math.abs((quizzes.length % 3) - 3); i++) placeholders.push(i)
-
     return (
     <div style={{ justifyContent: "center", overflowY: "scroll", marginTop: "5rem", width: "80vw", display: "grid", gridGap: "1rem", gridTemplateColumns: "repeat(auto-fit, 24rem)" }}>
         {quizzes.map((quiz : any, index : number) => {
             if ( !(quiz.code in user_data.quiz_details) ) return
+            if ( index > 50 ) return
 
             const quiz_code = quiz.code
             const quiz_length = quiz.content.length

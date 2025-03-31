@@ -1,0 +1,37 @@
+import prisma from '@/app/components/singletons/client'
+import stripe from '@/app/components/singletons/stripe'
+import { getServerSession } from 'next-auth'
+import { headers } from 'next/headers'
+import { NextRequest } from 'next/server'
+
+export async function POST(request : NextRequest) {
+  const session = await getServerSession()
+  const headers_list = await headers()
+  const signature : string = headers_list.get('stripe-signature')!
+
+  const event = stripe.webhooks.constructEvent(await request.text(), signature, process.env.STRIPE_WEBHOOK_SECRET!)
+  if (event.type == "payment_intent.succeeded")
+  {
+    const customer_id : any = event.data.object.customer
+    const customer : any = await stripe.customers.retrieve(customer_id)
+    const email = customer.email
+
+    await prisma.user.updateMany({
+        where: {
+          OR : [
+            { email: email }, 
+            { email: session?.user?.email }
+          ],
+        },
+        data: { pro: true }
+    })
+  }
+
+  return new Response()
+}
+
+export const config = {
+    api: {
+      bodyParser: false,
+    }
+}

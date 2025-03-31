@@ -1,21 +1,95 @@
-import { groq } from '@ai-sdk/groq';
-import { streamText } from 'ai'
-import { NextRequest } from 'next/server'
-import { getServerSession } from 'next-auth';
- 
+import prisma from '@/app/components/singletons/client'
+import { groq } from '@ai-sdk/groq'
+import { jsonSchema, streamObject } from 'ai'
+import { getServerSession } from 'next-auth'
+
+const quiz_schema = jsonSchema({
+  type: 'object',
+  properties: {
+    quiz_name: { type: 'string' },
+    content: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          questions: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                question: { type: 'string' },
+                responses: {
+                  type: 'array',
+                  items: { type: 'string' },
+                },
+                correct_index: { type: 'integer' },
+              },
+              required: ['question', 'responses', 'correct_index'],
+            },
+          },
+        },
+        required: ['name', 'questions'],
+      },
+    },
+  },
+  required: ['quiz_name', 'content'],
+})
+
 export async function GET(req) {
   const session = await getServerSession()
   
   if (session)
   {
-    const aiRequest = `Generate a valid JSON for a quiz based on the user-provided subject. Format: {content:[{name: '', questions: [{question: '', responses: '', correct_index: 0}]}], quiz_name:''}. Content is an array of 3-5 step objects, each step with name (the step's title) and questions, an array with 4-8 question objects. Each question has question (the prompt), responses (2-5 answer options, one correct at a random index), and correct_index. Steps should reflect a learning progression. If user input is nonsensical return { "content" : [], "quiz_name" : "INVALID_INPUTS"}. Include no other text/comments aside from the JSON.`
+    const ai_request = `Generate JSON for a quiz based on the user-provided subject, title, number of questions per step (MAX 5), and steps (MAX 5). If a step is an empty string you choose the subject of the step, with the step name reflecting the subject. Never have the correct_index be the same for 2 questions in a row. If any of the user input is nonsensical return { "content" : [], "quiz_name" : "INVALID_INPUTS"}. Include no other text/comments aside from the JSON.`
+    const ai_models = [
+      "gemma2-9b-it",
+      "llama-3.1-8b-instant",
+      "mixtral-8x7b-32768",
+      "llama-3.3-70b-versatile",
+    ]
+    
     const searchParams = req.nextUrl.searchParams
     const prompt = searchParams.get('prompt')
-    
-    const result = streamText({
-        model: groq("llama3-8b-8192"),
-        system: aiRequest,
-        prompt: prompt,
+
+    const user_data = await prisma.user.findFirst({ where: { email: session.user.email } })
+    var quiz_title = prompt
+    var ai_model = 0
+    var questions = 3
+    var steps = ["", "", ""]
+
+    const current_time = Math.floor(Date.now() / 1000)
+    if (!user_data.pro && current_time - user_data.last_generated < 30)
+    {
+      return new Response(JSON.stringify({ "content" : [], "quiz_name" : 'TOO_SOON'}))
+    }
+    else
+    {
+      await prisma.user.update({ where: { email: session.user.email }, data: { last_generated: current_time } })
+    }
+
+    if (user_data.pro)
+    {
+      quiz_title = searchParams.get('quiz_title') ?? prompt
+      ai_model = parseInt(searchParams.get('ai_model')) || 0
+      questions = parseInt(searchParams.get('questions')) || 3
+      steps = searchParams.get('steps') ?? `["", "", ""]`
+
+      if (ai_model == 3 && current_time - user_data.last_generated_advanced < 180)
+      {
+        return new Response(JSON.stringify({ "content" : [], "quiz_name" : 'TOO_SOON_ADVANCED'}))
+      }
+      else if (ai_model == 3)
+      {
+        await prisma.user.update({ where: { email: session.user.email }, data: { last_generated_advanced: current_time } })
+      }
+    }
+
+    const result = streamObject({
+        model: groq(ai_models[ai_model]),
+        system: ai_request,
+        schema: quiz_schema,
+        prompt: `subject: ${prompt}, title: ${quiz_title}, steps: ${JSON.stringify(steps)}, questions: ${questions}`,
     })
 
     return (await result).toTextStreamResponse()

@@ -52,7 +52,7 @@ export default function Quiz({ params } : any) {
 
       {
         quiz_details.step == content.length ?
-        <FinishScreen user_email={session?.user?.email!} quiz_length={content.length} quiz_ranking={quiz_ranking} quiz_code={quiz_code} is_leaderboard={false}/>
+        <FinishScreen user_email={session?.user?.email!} quiz_content={content} quiz_ranking={quiz_ranking} quiz_code={quiz_code} is_leaderboard={false}/>
         :
         <SelectionScreen content={content} quiz_details={quiz_details} quiz_code={quiz_code}/>
       }
