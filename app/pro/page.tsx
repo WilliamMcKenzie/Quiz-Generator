@@ -85,7 +85,7 @@ export default function Pro() {
               Helping <span className={`text-${color} border-b-5 border-dashed border-${color}/50 whitespace-nowrap duration-200`}>{dynamic_text}</span> <br></br> lightening fast.
             </div>
             <div className='text-md font-normal text-center mt-[2rem] w-[60%]'>
-              Upgrade to pro to enhance your Quizgen experience.
+              Upgrade to pro to enhance your QuizzGen experience.
             </div>
           </div>
 
@@ -190,8 +190,8 @@ export default function Pro() {
               </div>
               <div className="collapse collapse-arrow bg-base-100 border border-base-300">
                 <input type="radio" name="my-accordion-2" />
-                <div className="collapse-title font-semibold">What does Quizgen do?</div>
-                <div className="collapse-content text-sm">It generates Duolingo-style quizzes! You can use it to study and test yourself on any subject. It isn't just for testing yourself though, this step-by-step learning approach has been proven to work from companies like Duolingo.</div>
+                <div className="collapse-title font-semibold">What does QuizzGen do?</div>
+                <div className="collapse-content text-sm">It generates Duolingo-style quizzes about any given topic! You can use it to study and test yourself on any subject. It isn't just for testing yourself though, this step-by-step approach has been proven to work from companies like Duolingo to help you learn new things.</div>
               </div>
               <div className="collapse collapse-arrow bg-base-100 border border-base-300">
                 <input type="radio" name="my-accordion-2" />
