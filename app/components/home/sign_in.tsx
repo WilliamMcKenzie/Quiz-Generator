@@ -18,14 +18,6 @@ export default function SignIn()
                 Sign in with Google
                 <Google></Google>
             </button>
-            <button onClick={() => signIn('google')} className="btn btn-secondary mt-4">
-                Sign in with Microsoft
-                <Microsoft></Microsoft>
-            </button>
-            <button onClick={() => signIn('google')} className="btn btn-accent mt-4">
-                Sign in with Github
-                <GitHub></GitHub>
-            </button>
         </motion.div>
     )
 }
