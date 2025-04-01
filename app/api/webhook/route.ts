@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth'
 import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 
-export async function handler(request : NextRequest) {
+export async function POST(request : NextRequest) {
   const session = await getServerSession()
   const headers_list = await headers()
   const signature : string = headers_list.get('stripe-signature')!
