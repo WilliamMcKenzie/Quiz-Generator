@@ -45,11 +45,11 @@ function generateCode() {
     for (var i = 0; i < 5; i++) {
         if (Math.random() * 10 > 7)
         {
-            result += sample[Math.floor(Math.random()*27)]
+            result += sample[Math.floor(Math.random()*26)]
         }
         else
         {
-            result += Math.floor(Math.random()*10).toString()
+            result += (1 + Math.floor(Math.random()*9)).toString()
         }
     }
     return result
