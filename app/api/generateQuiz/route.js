@@ -41,7 +41,7 @@ export async function GET(req) {
   
   if (session)
   {
-    const ai_request = `Generate JSON for a quiz based on the user-provided subject, title, number of questions per step (MAX 5), and steps (MAX 5). If a step is an empty string you choose the subject of the step, with the step name reflecting the subject. Never have the correct_index be the same for 2 questions in a row. If any of the user input is nonsensical return { "content" : [], "quiz_name" : "INVALID_INPUTS"}. Include no other text/comments aside from the JSON.`
+    const ai_request = `Generate JSON for a quiz based on the user-provided subject, number of questions per step (MAX 5), and steps (MAX 5). If a step is an empty string you choose the subject of the step, with the step name reflecting the subject. Never have the correct_index be the same for 2 questions in a row. If the user's subject is nonsensical return { "content" : [], "quiz_name" : "INVALID_INPUTS"}. Include no other text/comments aside from the JSON.`
     const ai_models = [
       "gemma2-9b-it",
       "llama-3.1-8b-instant",
@@ -53,7 +53,6 @@ export async function GET(req) {
     const prompt = searchParams.get('prompt')
 
     const user_data = await prisma.user.findFirst({ where: { email: session.user.email } })
-    var quiz_title = prompt
     var ai_model = 0
     var questions = 3
     var steps = ["", "", ""]
@@ -70,14 +69,13 @@ export async function GET(req) {
 
     if (user_data.pro)
     {
-      quiz_title = searchParams.get('quiz_title') ?? prompt
       ai_model = parseInt(searchParams.get('ai_model')) || 0
       questions = parseInt(searchParams.get('questions')) || 3
-      steps = searchParams.get('steps') ?? `["", "", ""]`
+      steps = JSON.parse(searchParams.get('steps')) ?? ["", "", ""]
 
       if (ai_model == 3 && current_time - user_data.last_generated_advanced < 180)
       {
-        return new Response(JSON.stringify({ "content" : [], "quiz_name" : 'TOO_SOON_ADVANCED'}))
+        // return new Response(JSON.stringify({ "content" : [], "quiz_name" : 'TOO_SOON_ADVANCED'}))
       }
       else if (ai_model == 3)
       {
@@ -89,7 +87,7 @@ export async function GET(req) {
         model: groq(ai_models[ai_model]),
         system: ai_request,
         schema: quiz_schema,
-        prompt: `subject: ${prompt}, title: ${quiz_title}, steps: ${JSON.stringify(steps)}, questions: ${questions}`,
+        prompt: `subject: ${prompt}, steps: ${JSON.stringify(steps)} (${steps.length} total steps), # of questions per step: ${questions}`,
     })
 
     return (await result).toTextStreamResponse()

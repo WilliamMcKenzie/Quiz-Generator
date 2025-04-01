@@ -18,6 +18,7 @@ export default function CreateQuiz({ session, code_ref } : props_typing)
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
     const [warning, setWarning] = useState<string>("")
+    const [proPopup, showProPopup] = useState<boolean>(false)
     const [is_mobile, setMobile] = useState<boolean>(false)
 
     const advanced_settings_ref : LegacyRef<HTMLDialogElement> = useRef(null)
@@ -41,7 +42,7 @@ export default function CreateQuiz({ session, code_ref } : props_typing)
         })
     }, [])
 
-    async function uploadQuiz(raw_quiz: string) 
+    async function uploadQuiz(raw_quiz: string)
     {
         const quiz = JSON.parse(raw_quiz)
         if (quiz.quiz_name == "INVALID_INPUTS")
@@ -51,14 +52,14 @@ export default function CreateQuiz({ session, code_ref } : props_typing)
             setSubject("")
             setError(true)
         }
-        if (quiz.quiz_name == "TOO_SOON")
+        else if (quiz.quiz_name == "TOO_SOON")
         {
             setLoading(false)
             setProgress(0)
             setSubject("")
             setWarning("Not so fast! You are on cooldown.")
         }
-        if (quiz.quiz_name == "TOO_SOON_ADVANCED")
+        else if (quiz.quiz_name == "TOO_SOON_ADVANCED")
         {
             setLoading(false)
             setProgress(0)
@@ -113,28 +114,56 @@ export default function CreateQuiz({ session, code_ref } : props_typing)
 
     return (
         <div style={{ width: "100vw" }}>
-            <AdvancedSettings ref={advanced_settings_ref} createQuiz={createQuiz}/>
+            <AdvancedSettings ref={advanced_settings_ref} createQuiz={createQuiz} showProPopup={showProPopup}/>
 
             {
                 warning != "" ?
                 is_mobile ?
-                    <div role="alert" className="alert sm:alert-horizontal absolute top-[5rem] left-[1rem]" style={{ width: "calc(100vw - 2rem)" }}>
+                    <div role="alert" className="alert sm:alert-horizontal absolute top-[5rem] left-[1rem] z-1" style={{ width: "calc(100vw - 2rem)" }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                         <span>{warning}</span>
                         <div>
-                            <button className="btn btn-primary btn-sm" onClick={() => setWarning("")}>Close</button>
+                            <button className="btn btn-accent btn-sm" onClick={() => setWarning("")}>Close</button>
                         </div>
                     </div>
                     :
-                    <div role="alert" className="alert sm:alert-horizontal absolute top-2 left-2">
+                    <div role="alert" className="alert sm:alert-horizontal absolute top-2 left-2 z-1">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                         <span>{warning}</span>
                         <div>
-                            <button className="btn btn-primary btn-sm" onClick={() => setWarning("")}>Close</button>
+                            <button className="btn btn-accent btn-sm" onClick={() => setWarning("")}>Close</button>
+                        </div>
+                    </div>
+                :
+                <></>
+            }
+
+            {
+                proPopup && warning == "" ?
+                is_mobile ?
+                    <div role="alert" className="alert sm:alert-horizontal absolute top-[5rem] left-[1rem] z-1" style={{ width: "calc(100vw - 2rem)" }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span>To use the settings feature you need to be pro. Just type in the box below and hit the arrow!</span>
+                        <div>
+                            <button className="btn btn-primary btn-sm mr-2" onClick={() => router.push("/pro")}>Upgrade</button>
+                            <button className="btn btn-accent btn-sm" onClick={() => showProPopup(false)}>Close</button>
+                        </div>
+                    </div>
+                    :
+                    <div role="alert" className="alert sm:alert-horizontal absolute top-2 left-2 z-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span>To use the settings feature you need to be pro. Just type in the box below and hit generate!</span>
+                        <div>
+                            <button className="btn btn-primary btn-sm mr-2" onClick={() => router.push("/pro")}>Upgrade</button>
+                            <button className="btn btn-accent btn-sm" onClick={() => showProPopup(false)}>Close</button>
                         </div>
                     </div>
                 :

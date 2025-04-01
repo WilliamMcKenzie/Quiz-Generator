@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { forwardRef, useEffect, useState } from "react"
 
-export default forwardRef(function AdvancedSettings({ createQuiz } : { createQuiz : any }, ref : any)
+export default forwardRef(function AdvancedSettings({ createQuiz, showProPopup } : { createQuiz : any, showProPopup : any }, ref : any)
 {
     const router = useRouter()
     const { data: session } = useSession()
@@ -39,7 +39,8 @@ export default forwardRef(function AdvancedSettings({ createQuiz } : { createQui
         }
         else if (!pro)
         {
-            router.push("/pro")
+            ref?.current?.close()
+            showProPopup(true)
         }
         else
         {
@@ -54,7 +55,7 @@ export default forwardRef(function AdvancedSettings({ createQuiz } : { createQui
     }
 
     return (
-        <dialog ref={ref} id="share_modal" className="modal">
+        <dialog ref={ref} id="advanced_settings" className="modal">
             <div className="modal-box" style={{maxWidth: "fit-content"}}>
                 <h1 className="text-2xl font-semibold">Advanced Settings</h1>
                 <div className="mt-8">
