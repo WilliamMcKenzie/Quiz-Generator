@@ -5,14 +5,30 @@ import { getServerSession } from 'next-auth'
 import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 
-export async function POST(request : NextRequest) {
+export async function handler(request : NextRequest) {
   const session = await getServerSession()
   const headers_list = await headers()
   const signature : string = headers_list.get('stripe-signature')!
+  const body = await request.text()
+  
+  let event
 
-  const event = stripe.webhooks.constructEvent(await request.text(), signature, process.env.STRIPE_WEBHOOK_SECRET!)
+  try 
+  {
+    event = stripe.webhooks.constructEvent(
+      body, 
+      signature, 
+      process.env.STRIPE_WEBHOOK_SECRET!
+    )
+  }
+  catch (error : any)
+  {
+    return new Response(`Webhook Error: ${error.message}`, { status: 420 })
+  }
+
   if (event.type == "checkout.session.completed")
   {
+    console.log("CHECKOUT COMPLETED")
     const customer_id : any = event.data.object.customer
     const customer : any = await stripe.customers.retrieve(customer_id)
     const email = customer.email
@@ -36,10 +52,4 @@ export async function POST(request : NextRequest) {
   }
 
   return new Response("SUCCESS")
-}
-
-export const config = {
-    api: {
-      bodyParser: false,
-    }
 }
