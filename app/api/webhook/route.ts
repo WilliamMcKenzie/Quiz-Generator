@@ -37,3 +37,9 @@ export async function POST(request : NextRequest) {
 
   return new Response("SUCCESS")
 }
+
+export const config = {
+    api: {
+      bodyParser: false,
+    }
+}
