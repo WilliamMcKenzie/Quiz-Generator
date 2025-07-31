@@ -42,7 +42,7 @@ export default function QuestionInterface({ quiz_step_data, step_score, question
                     }
 
                     return (
-                        <button disabled={quiz_finished || (answer_locked_in && (!guessed_index && !correct_index))} className={ "btn relative h-12 mt-2 w-full " + button_class } key={index} onClick={() => { setGuess(index) }}>
+                        <button disabled={quiz_finished || (answer_locked_in && (!guessed_index && !correct_index))} className={ "btn relative mt-2 w-full " + button_class } style={{ height: "fit-content", minHeight: "calc(var(--spacing)*12)"}} key={index} onClick={() => { setGuess(index) }}>
                             <a className="absolute left-4">{index + 1}</a>
                             <p className="w-[80%]"> {response} </p>
                         </button>
