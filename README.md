@@ -1,6 +1,9 @@
 ## Video Demo
 https://www.youtube.com/watch?v=lvmRy3AyD4I
 
+## Try it out
+https://quizzgen.com
+
 ## Project Stack
 Built on NextJS, LLM using Groq, database using MongoDB, styling using DaisyUI/Framer Motion
 
