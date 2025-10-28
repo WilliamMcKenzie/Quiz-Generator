@@ -55,7 +55,7 @@ export default forwardRef(function AdvancedSettings({ createQuiz, showProPopup }
 
     return (
         <dialog ref={ref} id="advanced_settings" className="modal">
-            <div className="modal-box" style={{maxWidth: "fit-content"}}>
+            <div className="modal-box" style={{maxWidth: "fit-content", maxHeight: "80vh"}}>
                 <h1 className="text-2xl font-semibold">Advanced Settings</h1>
                 <div className="mt-8">
                     <label className="label">
