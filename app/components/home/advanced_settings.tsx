@@ -15,9 +15,8 @@ export default forwardRef(function AdvancedSettings({ createQuiz, showProPopup }
     const [questions, setQuestions] = useState(3)
     
     const ai_models = [
-        "Default (gemma2-9b)",
+        "Default (oss-20b)",
         "Fast (llama-8b)",
-        "Medium (mixtral-8b)",
         "Detailed (lama3-70b) (3m cooldown)"
     ]
 

@@ -39,13 +39,13 @@ const quiz_schema = jsonSchema({
 export async function GET(req) {
   const session = await getServerSession()
   
-  if (session)
+  // if (session)
+  if (true)
   {
     const ai_request = `Generate JSON for a quiz based on the user-provided subject, number of questions per step (MAX 5), and steps (MAX 5). If a step is an empty string you choose the subject of the step, with the step name reflecting the subject. Never have the correct_index be the same for 2 questions in a row. If the user's subject is nonsensical return { "content" : [], "quiz_name" : "INVALID_INPUTS"}. Include no other text/comments aside from the JSON.`
     const ai_models = [
-      "gemma2-9b-it",
+      "openai/gpt-oss-20b",
       "llama-3.1-8b-instant",
-      "mixtral-8x7b-32768",
       "llama-3.3-70b-versatile",
     ]
     

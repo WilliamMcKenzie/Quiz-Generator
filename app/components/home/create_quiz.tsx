@@ -75,7 +75,7 @@ export default function CreateQuiz({ session, code_ref } : props_typing)
 
     async function createQuiz(settings : Record<string, string> | null = null) 
     {
-        if (session && subject.length < 100) 
+        if (session && subject.length < 100)
         {
             var generatedQuiz = ""
             var temp_progress = 0
