@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth"
+import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next"
 import SessionProvider from "./components/singletons/session"
 import "./globals.css"
@@ -15,6 +16,7 @@ export default async function RootLayout({ children } : Readonly<{ children: Rea
   return (
     <html lang="en">
       <body>
+          <Analytics/>
           <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
