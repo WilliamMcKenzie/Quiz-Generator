@@ -1,12 +1,13 @@
 import { getServerSession } from "next-auth"
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next"
-import SessionProvider from "./components/singletons/session"
+import SessionProvider from "./components/session"
+
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Quizzgen",
-  description: "Test yourself on anything, lightening fast.",
+  title: "Rizzchess",
+  description: "Its time to rizz.",
 }
 
 export default async function RootLayout({ children } : Readonly<{ children: React.ReactNode }>) 
